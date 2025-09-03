@@ -1,0 +1,39 @@
+# Ambientes virtuais
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+gpm_env/
+pm_ai_env/
+
+# Credenciais
+config/credentials.json
+
+# IDE
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/# Ambientes virtuais
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+gpm_env/
+pm_ai_env/
+
+# Credenciais
+config/credentials.json
+
+# IDE
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/

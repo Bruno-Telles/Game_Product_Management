@@ -3,9 +3,10 @@ import streamlit as st
 import os
 import sys
 from pathlib import Path
+from operational.utils import get_sheet_data
 
 # Adiciona a raiz do projeto ao caminho do Python
-sys.path.append(str(Path(__file__).parent.parent / 'operational'))
+sys.path.append(str(Path(__file__).parent.parent))
 
 # Configuração da página (deve vir antes de qualquer output)
 st.set_page_config(page_title="🎮 Game Product Dashboard", layout="wide")
@@ -18,9 +19,20 @@ dashboard = st.sidebar.radio(
     ["Análise de Coorte", "Monetização"]
 )
 
+
+# Roteamento dos dashboards
+if dashboard == "Análise de Coorte":
+    from operational.dashboards.cohort import run as cohort_run
+    cohort_run()
+elif dashboard == "Monetização":
+    from operational.dashboards.monetization import run as monetization_run
+    monetization_run()
+
+
+"""
 # === Funções de Conexão com Google Sheets ===
 def get_google_sheets_client():
-    """Cria e retorna um cliente do Google Sheets usando st.secrets."""
+    # Cria e retorna um cliente do Google Sheets usando st.secrets.
     try:
         credentials_json = st.secrets["google_sheets"]["credentials_json"]
         creds = service_account.Credentials.from_service_account_info(
@@ -33,7 +45,7 @@ def get_google_sheets_client():
         return None
 
 def get_sheet_data(spreadsheet_id, range_name='Sheet1!A1:Z1000'):
-    """Carrega dados de uma planilha como DataFrame."""
+    # Carrega dados de uma planilha como DataFrame.
     service = get_google_sheets_client()
     if not service:
         return None
@@ -73,3 +85,4 @@ elif dashboard == "Monetização":
         st.metric("Receita Total", f"R$ {df['Revenue'].sum():,.2f}")
     else:
         st.warning("Nenhum dado encontrado na aba 'Monetization'.")
+"""

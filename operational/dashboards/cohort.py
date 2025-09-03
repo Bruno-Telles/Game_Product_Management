@@ -4,7 +4,7 @@ import pandas as pd
 from operational.utils.google_sheets import get_sheet_data
 
 def run():
-    st.subheader("📊 Dashboard de Coorte")
+    st.subheader('📊 Cohort Analysis')
     
     SPREADSHEET_ID = '15k4L7Sib0ZRTWfeo_wgR5F4YLGQkGEiPZPSPFjwZHHw'
     df = get_sheet_data(SPREADSHEET_ID, 'Sheet1!A1:G100')
@@ -13,4 +13,4 @@ def run():
         st.warning("Nenhum dado encontrado na aba 'Sheet1'.")
     else:
         st.dataframe(df)
-        st.metric("Total de Usuários", len(df))
+        st.metric('Total de Usuários', len(df))

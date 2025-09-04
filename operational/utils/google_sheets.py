@@ -17,7 +17,7 @@ def get_google_sheets_client():
                 credentials_json = json.loads(credentials_json)
         else:
             # Fallback para arquivo local
-            config_path = Path(__file__).parent.parent.parent / "config" / "credentials.json"
+            config_path = Path(__file__).parent.parent / "config" / "credentials.json"
             if config_path.exists():
                 with open(config_path, 'r') as f:
                     credentials_json = json.load(f)

@@ -1,88 +1,77 @@
 # operational/streamlit_app.py
 import streamlit as st
-import os
 import sys
 from pathlib import Path
-from operational.utils import get_sheet_data
 
 # Adiciona a raiz do projeto ao caminho do Python
-sys.path.append(str(Path(__file__).parent.parent))
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
 
 # Configuração da página (deve vir antes de qualquer output)
-st.set_page_config(page_title="🎮 Game Product Dashboard", layout="wide")
+st.set_page_config(
+    page_title="🎮 Game Product Dashboard", 
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Título principal
+st.title("🎮 Game Product Management Dashboard")
+st.markdown("---")
+
+# Sidebar
 st.sidebar.title("📊 Dashboards")
 st.sidebar.markdown("Escolha um painel abaixo:")
 
 # Menu de navegação
 dashboard = st.sidebar.radio(
-    "Dashboard",
-    ["Análise de Coorte", "Monetização"]
+    "Selecione o Dashboard:",
+    ["🏠 Home", "📈 Análise de Coorte", "💰 Monetização"]
 )
 
+st.sidebar.markdown("---")
+st.sidebar.markdown("**Status da Conexão:**")
+
+# Testa conexão com Google Sheets
+try:
+    from operational.utils.google_sheets import test_connection
+    if test_connection():
+        st.sidebar.success("✅ Google Sheets OK")
+    else:
+        st.sidebar.error("❌ Google Sheets Erro")
+except Exception as e:
+    st.sidebar.error(f"❌ Erro: {e}")
 
 # Roteamento dos dashboards
-if dashboard == "Análise de Coorte":
-    from operational.dashboards.cohort import run as cohort_run
-    cohort_run()
-elif dashboard == "Monetização":
-    from operational.dashboards.monetization import run as monetization_run
-    monetization_run()
-
-
-"""
-# === Funções de Conexão com Google Sheets ===
-def get_google_sheets_client():
-    # Cria e retorna um cliente do Google Sheets usando st.secrets.
-    try:
-        credentials_json = st.secrets["google_sheets"]["credentials_json"]
-        creds = service_account.Credentials.from_service_account_info(
-            credentials_json,
-            scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']
-        )
-        return build('sheets', 'v4', credentials=creds)
-    except Exception as e:
-        st.error(f"❌ Erro ao conectar ao Google Sheets: {e}")
-        return None
-
-def get_sheet_data(spreadsheet_id, range_name='Sheet1!A1:Z1000'):
-    # Carrega dados de uma planilha como DataFrame.
-    service = get_google_sheets_client()
-    if not service:
-        return None
-
-    try:
-        result = service.spreadsheets().values().get(
-            spreadsheetId=spreadsheet_id,
-            range=range_name
-        ).execute()
-        values = result.get('values', [])
-        if not values:
-            return pd.DataFrame()
-        return pd.DataFrame(values[1:], columns=values[0])
-    except Exception as e:
-        st.error(f"❌ Erro ao carregar dados: {e}")
-        return pd.DataFrame()
-
-# === Roteamento dos Dashboards ===
-SPREADSHEET_ID = '15k4L7Sib0ZRTWfeo_wgR5F4YLGQkGEiPZPSPFjwZHHw'
-
-if dashboard == "Análise de Coorte":
-    st.title('📅 Cohort Analysis')
-    df = get_sheet_data(SPREADSHEET_ID, 'Cohort!A1:G100')
+if dashboard == "🏠 Home":
+    st.header("Bem-vindo ao Dashboard de Product Management!")
     
-    if df is not None and not df.empty:
-        st.dataframe(df, use_container_width=True)
-        st.metric("Total de Coortes", len(df))
-    else:
-        st.warning("Nenhum dado encontrado na aba 'Cohort'.")
-
-elif dashboard == "Monetização":
-    st.title("💰 Monetização")
-    df = get_sheet_data(SPREADSHEET_ID, 'Monetization!A1:F50')
+    col1, col2 = st.columns(2)
     
-    if df is not None and not df.empty:
-        st.dataframe(df, use_container_width=True)
-        st.metric("Receita Total", f"R$ {df['Revenue'].sum():,.2f}")
-    else:
-        st.warning("Nenhum dado encontrado na aba 'Monetization'.")
-"""
+    with col1:
+        st.subheader("📈 Análise de Coorte")
+        st.write("Analise a retenção de usuários ao longo do tempo")
+        
+    with col2:
+        st.subheader("💰 Monetização")
+        st.write("Acompanhe métricas de receita e conversão")
+    
+    st.markdown("---")
+    st.info("👈 Use o menu lateral para navegar entre os dashboards")
+
+elif dashboard == "📈 Análise de Coorte":
+    try:
+        from operational.dashboards.cohort import run as cohort_run
+        cohort_run()
+    except Exception as e:
+        st.error(f"Erro ao carregar dashboard de coorte: {e}")
+
+elif dashboard == "💰 Monetização":
+    try:
+        from operational.dashboards.monetization import run as monetization_run
+        monetization_run()
+    except Exception as e:
+        st.error(f"Erro ao carregar dashboard de monetização: {e}")
+
+# Footer
+st.markdown("---")
+st.markdown("*Dashboard desenvolvido para estudos de Python + Streamlit*")

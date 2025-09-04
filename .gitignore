@@ -37,3 +37,4 @@ config/credentials.json
 
 # Streamlit
 .streamlit/
+secrets.toml

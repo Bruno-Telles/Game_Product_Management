@@ -1,11 +1,11 @@
 # operational/utils/google_sheets.py
 import streamlit as st
-import pandas as pd
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+import pandas as pd
 
 def get_google_sheets_client():
-    # Cria e retorna um cliente do Google Sheets usando st.secrets
+    """Cria e retorna um cliente do Google Sheets usando st.secrets."""
     try:
         credentials_json = st.secrets["google_sheets"]["credentials_json"]
         creds = service_account.Credentials.from_service_account_info(
@@ -18,7 +18,7 @@ def get_google_sheets_client():
         return None
 
 def get_sheet_data(spreadsheet_id, range_name='Sheet1!A1:Z1000'):
-    # Carrega dados de uma planilha como DataFrame
+    """Carrega dados de uma planilha como DataFrame."""
     service = get_google_sheets_client()
     if not service:
         return pd.DataFrame()

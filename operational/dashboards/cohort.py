@@ -3,9 +3,6 @@ import streamlit as st
 import pandas as pd
 from operational.utils import get_sheet_data
 
-"""from google.oauth2 import service_account
-from googleapiclient.discovery import build"""
-
 def run():
     st.subheader("📅 Análise de Coorte")
     SPREADSHEET_ID = '15k4L7Sib0ZRTWfeo_wgR5F4YLGQkGEiPZPSPFjwZHHw'

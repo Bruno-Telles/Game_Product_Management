@@ -11,7 +11,7 @@ def get_google_sheets_client():
     """Cria e retorna um cliente do Google Sheets."""
     try:
         # Usa diretamente o arquivo credentials.json local
-        config_path = Path(__file__).parent.parent.parent / "config" / "credentials.json"
+        config_path = Path(__file__).parent.parent.parent / "Configuração" / "config" / "credentials.json"
         
         if not config_path.exists():
             st.error(f"❌ Arquivo credentials.json não encontrado em: {config_path}")

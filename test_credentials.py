@@ -6,7 +6,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 # Caminho para o credentials.json
-config_path = Path("config/credentials.json")
+config_path = Path("Configuração/config/credentials.json")
 
 def test_credentials():
     print("🔍 Testando credenciais do Google Sheets...")

@@ -10,30 +10,32 @@ import pandas as pd
 def get_google_sheets_client():
     """Cria e retorna um cliente do Google Sheets."""
     try:
-        # Primeiro tenta usar st.secrets (para Streamlit Cloud)
-        if hasattr(st, 'secrets') and 'google_sheets' in st.secrets:
-            credentials_json = st.secrets["google_sheets"]["credentials_json"]
-            if isinstance(credentials_json, str):
-                credentials_json = json.loads(credentials_json)
-        else:
-            # Fallback para arquivo local
-            config_path = Path(__file__).parent.parent / "config" / "credentials.json"
-            if config_path.exists():
-                with open(config_path, 'r') as f:
-                    credentials_json = json.load(f)
-            else:
-                st.error("❌ Arquivo credentials.json não encontrado!")
-                return None
+        # Usa diretamente o arquivo credentials.json local
+        config_path = Path(__file__).parent.parent.parent / "Configuração" / "config" / "credentials.json"
+        
+        if not config_path.exists():
+            st.error(f"❌ Arquivo credentials.json não encontrado em: {config_path}")
+            return None
+            
+        with open(config_path, 'r', encoding='utf-8') as f:
+            credentials_json = json.load(f)
         
         creds = service_account.Credentials.from_service_account_info(
             credentials_json,
             scopes=['https://www.googleapis.com/auth/spreadsheets.readonly']
         )
-        return build('sheets', 'v4', credentials=creds)
         
+        service = build('sheets', 'v4', credentials=creds)
+        return service
+        
+    except FileNotFoundError:
+        st.error(f"❌ Arquivo credentials.json não encontrado em: {config_path}")
+        return None
+    except json.JSONDecodeError:
+        st.error("❌ Erro ao decodificar credentials.json. Verifique se o arquivo está em formato JSON válido.")
+        return None
     except Exception as e:
         st.error(f"❌ Erro ao conectar ao Google Sheets: {e}")
-        st.error("Verifique se o arquivo credentials.json está configurado corretamente.")
         return None
 
 def get_sheet_data(spreadsheet_id, sheet_name='Sheet1', range_cells='A1:Z1000'):

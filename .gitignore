@@ -1,5 +1,7 @@
-# Ambientes virtuais
-__pycache__
+# ----------------------------------------------------------------
+# Arquivos de Ambiente Virtual e Cache do Python
+# ----------------------------------------------------------------
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
@@ -9,32 +11,32 @@ venv/
 gpm_env/
 pm_ai_env/
 
-# Credenciais
-config/credentials.json
+# ----------------------------------------------------------------
+# Credenciais, Variáveis de Ambiente e Secrets
+# ----------------------------------------------------------------
+# Ignora qualquer arquivo .env em qualquer lugar do projeto
+*.env
 
-# IDE
-.vscode/
-.idea/
+# Ignora o arquivo de credenciais específico
+/Configuração/config/credentials.json
 
-# Streamlit
-.streamlit/# Ambientes virtuais
-__pycache__
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-gpm_env/
-pm_ai_env/
-
-# Credenciais
-config/credentials.json
-
-# IDE
-.vscode/
-.idea/
-
-# Streamlit
+# Ignora a pasta de secrets do Streamlit e seu conteúdo
 .streamlit/
 secrets.toml
+
+# ----------------------------------------------------------------
+# Dados, Logs e Exportações
+# ----------------------------------------------------------------
+# Ignora o conteúdo das pastas de dados para manter o repo leve
+/📊 Dados/data/raw/*
+/📊 Dados/data/processed/*
+/📊 Dados/data/exports/*
+
+# Ignora arquivos de log
+*.log
+
+# ----------------------------------------------------------------
+# Configurações de IDE
+# ----------------------------------------------------------------
+.vscode/
+.idea/

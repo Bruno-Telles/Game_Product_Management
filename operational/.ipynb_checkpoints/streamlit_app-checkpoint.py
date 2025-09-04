@@ -3,6 +3,7 @@ import streamlit as st
 import os
 import sys
 from pathlib import Path
+from operational.utils import get_sheet_data
 
 # Adiciona a raiz do projeto ao caminho do Python
 sys.path.append(str(Path(__file__).parent.parent))

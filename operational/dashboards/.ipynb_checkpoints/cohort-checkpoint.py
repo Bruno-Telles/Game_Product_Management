@@ -1,9 +1,10 @@
 # operational/dashboards/cohort.py
 import streamlit as st
 import pandas as pd
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
 from operational.utils import get_sheet_data
+
+"""from google.oauth2 import service_account
+from googleapiclient.discovery import build"""
 
 def run():
     st.subheader("📅 Análise de Coorte")
